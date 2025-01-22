@@ -121,7 +121,7 @@ public class RobotContainer
       drivebase.setDefaultCommand(driveFieldOrientedDirectAngleKeyboard);
     } else
     {
-      drivebase.setDefaultCommand(driveFieldOrientedDirectAngle);
+      drivebase.setDefaultCommand(driveRobotOrientedAngularVelocity);
     }
 
     if (Robot.isSimulation())
@@ -146,7 +146,7 @@ public class RobotContainer
       driverController.square().onTrue(Commands.runOnce(drivebase::addFakeVisionReading));
       driverController.circle().whileTrue(
           drivebase.driveToPose(
-              new Pose2d(new Translation2d(4, 4), Rotation2d.fromDegrees(0)))
+              new Pose2d(new Translation2d(4.9, 3), Rotation2d.fromDegrees(300)))
                               );
       driverController.options().whileTrue(Commands.none());
       driverController.create().whileTrue(Commands.none());
