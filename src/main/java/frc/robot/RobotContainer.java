@@ -33,14 +33,14 @@ public class RobotContainer
   final CommandPS5Controller driverController = new CommandPS5Controller(0);
   // The robot's subsystems and commands are defined here...
   private final SwerveSubsystem       drivebase  = new SwerveSubsystem(new File(Filesystem.getDeployDirectory(),
-                                                                                "swerve/kraken"));
+                                                                                "swerve/Software-bot-swerve-config"));
 
   /**
    * Converts driver input into a field-relative ChassisSpeeds that is controlled by angular velocity.
    */
   SwerveInputStream driveAngularVelocity = SwerveInputStream.of(drivebase.getSwerveDrive(),
-                                                                () -> driverController.getLeftY(),
-                                                                () -> driverController.getLeftX())
+                                                                () -> driverController.getLeftY() * -1,
+                                                                () -> driverController.getLeftX() * -1)
                                                             .withControllerRotationAxis(() -> driverController.getRightX() * -1)
                                                             .deadband(OperatorConstants.DEADBAND)
                                                             .scaleTranslation(0.8)
@@ -121,7 +121,7 @@ public class RobotContainer
       drivebase.setDefaultCommand(driveFieldOrientedDirectAngleKeyboard);
     } else
     {
-      drivebase.setDefaultCommand(driveRobotOrientedAngularVelocity);
+      drivebase.setDefaultCommand(driveFieldOrientedDirectAngle);
     }
 
     if (Robot.isSimulation())
