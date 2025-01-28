@@ -68,7 +68,8 @@ public class RobotContainer {
 	SwerveInputStream driveAngularVelocityKeyboard = SwerveInputStream.of(drivebase.getSwerveDrive(),
 			() -> -driverController.getLeftY(),
 			() -> -driverController.getLeftX()
-	).withControllerRotationAxis(() -> driverController.getRawAxis(2))
+	).withControllerRotationAxis(()
+					-> driverController.getRawAxis(2))
 			.deadband(OperatorConstants.DEADBAND)
 			.scaleTranslation(0.8)
 			.allianceRelativeControl(true);
@@ -135,8 +136,20 @@ public class RobotContainer {
 					targetPose.getRotation().getDegrees()
 				};
 				SmartDashboard.putNumberArray("Target Pose", poseArray);
+				SmartDashboard.putNumber("Target pose error", targetPose.getTranslation().getDistance(drivebase.getPose().getTranslation()));
 			}, drivebase));
-			driverController.triangle().whileTrue(new DeferredCommand(() -> drivebase.driveToPose(targetPose), Set.of()));
+
+			driverController.triangle().whileTrue(
+				new DeferredCommand(
+					() -> new ParallelCommandGroup(
+						drivebase.driveToPose(targetPose),
+						Commands.run(() ->
+							SmartDashboard.putNumber("Target pose error", targetPose.getTranslation().getDistance(drivebase.getPose().getTranslation()))
+						)
+					), Set.of()
+				)
+			);
+
 			driverController.options().whileTrue(Commands.none());
 			driverController.create().whileTrue(Commands.none());
 			driverController.L1().whileTrue(Commands.runOnce(drivebase::lock, drivebase).repeatedly());

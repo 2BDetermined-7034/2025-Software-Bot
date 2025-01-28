@@ -31,8 +31,8 @@ public class Vision {
 	public Vision() {
 		frontCam = new PhotonCamera("front");
 		backCam = new PhotonCamera("back");
-		robotToFront = new Transform3d(new Translation3d(0.39, 0, 0), new Rotation3d(0,0,0));
-		robotToBack = new Transform3d(new Translation3d(-0.39, 0.0, 0), new Rotation3d(0,0, Math.PI));
+		robotToFront = new Transform3d(new Translation3d(0.39, 0, 0.135), new Rotation3d(0, Math.toRadians(-30), 0));
+		robotToBack = new Transform3d(new Translation3d(-0.39, 0.0, 0.23), new Rotation3d(0,0, Math.PI));
 		frontPoseEstimator = new PhotonPoseEstimator(tagFieldLayout, PhotonPoseEstimator.PoseStrategy.MULTI_TAG_PNP_ON_COPROCESSOR, robotToFront);
 		backPoseEstimator = new PhotonPoseEstimator(tagFieldLayout, PhotonPoseEstimator.PoseStrategy.MULTI_TAG_PNP_ON_COPROCESSOR, robotToBack);
 		stdDevs = MatBuilder.fill(Nat.N3(), Nat.N1(), 2.0, 2.0, 0.5);
