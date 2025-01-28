@@ -175,7 +175,7 @@ public class SwerveSubsystem extends SubsystemBase
 					// PPHolonomicController is the built in path following controller for holonomic drive trains
 					new PPHolonomicDriveController(
 							// Translation PID constants
-							new PIDConstants(10.0, 0.0, 0.0),
+							new PIDConstants(7.5, 0.0, 0.0),
 							// Rotation PID constants
 							new PIDConstants(5.0, 0.0, 0.0)
 					),
@@ -187,8 +187,7 @@ public class SwerveSubsystem extends SubsystemBase
 						// THE ORIGIN WILL REMAIN ON THE BLUE SIDE
 
 						var alliance = DriverStation.getAlliance();
-						if (alliance.isPresent())
-						{
+						if (alliance.isPresent()) {
 							return alliance.get() == DriverStation.Alliance.Red;
 						}
 						return false;
@@ -197,8 +196,7 @@ public class SwerveSubsystem extends SubsystemBase
 					// Reference to this subsystem to set requirements
 			);
 
-		} catch (Exception e)
-		{
+		} catch (Exception e) {
 			// Handle exception as needed
 			e.printStackTrace();
 		}
@@ -261,7 +259,7 @@ public class SwerveSubsystem extends SubsystemBase
 		return AutoBuilder.pathfindToPose(
 				pose,
 				constraints,
-				edu.wpi.first.units.Units.MetersPerSecond.of(0) // Goal end velocity in meters/sec
+				edu.wpi.first.units.Units.MetersPerSecond.of(0.0) // Goal end velocity in meters/sec
 		);
 	}
 
