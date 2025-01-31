@@ -58,17 +58,17 @@ public class Vision {
 		FRONT_CAM("front",
 				new Transform3d(
 						new Translation3d(0.39, 0, 0.135),
-						new Rotation3d(0, Math.toRadians(-30), 0)),
-				PhotonPoseEstimator.PoseStrategy.MULTI_TAG_PNP_ON_COPROCESSOR,
-				VecBuilder.fill(2.0, 2.0, 0.5),
-				VecBuilder.fill(1.0, 1.0, 0.5)),
-		BACK_CAM("back",
-				new Transform3d(
-						new Translation3d(-0.39, 0.0, 0.23),
-						new Rotation3d(0, 0, Math.PI)),
+						new Rotation3d(0, Math.toRadians(-67), 0)),
 				PhotonPoseEstimator.PoseStrategy.MULTI_TAG_PNP_ON_COPROCESSOR,
 				VecBuilder.fill(2.0, 2.0, 0.5),
 				VecBuilder.fill(1.0, 1.0, 0.5));
+//		BACK_CAM("back",
+//				new Transform3d(
+//						new Translation3d(-0.39, 0.0, 0.23),
+//						new Rotation3d(0, 0, Math.PI)),
+//				PhotonPoseEstimator.PoseStrategy.MULTI_TAG_PNP_ON_COPROCESSOR,
+//				VecBuilder.fill(2.0, 2.0, 0.5),
+//				VecBuilder.fill(1.0, 1.0, 0.5));
 
 		private final PhotonCamera photonCamera;
 		private final Transform3d robotToCam;

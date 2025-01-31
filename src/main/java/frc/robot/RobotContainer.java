@@ -4,13 +4,16 @@
 
 package frc.robot;
 
+import com.pathplanner.lib.auto.AutoBuilder;
 import com.pathplanner.lib.auto.NamedCommands;
+import com.pathplanner.lib.commands.PathPlannerAuto;
 import edu.wpi.first.math.geometry.Pose2d;
 import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.math.geometry.Translation2d;
 import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.Filesystem;
 import edu.wpi.first.wpilibj.RobotBase;
+import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.*;
 import edu.wpi.first.wpilibj2.command.button.CommandPS5Controller;
@@ -19,6 +22,7 @@ import edu.wpi.first.wpilibj2.command.button.Trigger;
 import frc.robot.Constants.OperatorConstants;
 import frc.robot.subsystems.swervedrive.SwerveSubsystem;
 import java.io.File;
+import java.util.List;
 import java.util.Set;
 
 import swervelib.SwerveInputStream;
@@ -29,6 +33,8 @@ import swervelib.SwerveInputStream;
  * Instead, the structure of the robot (including subsystems, commands, and trigger mappings) should be declared here.
  */
 public class RobotContainer {
+	private final SendableChooser<Command> autoChooser;
+
 
 	// Replace with CommandPS4Controller or CommandJoystick if needed
 	final CommandPS5Controller driverController = new CommandPS5Controller(0);
@@ -86,8 +92,23 @@ public class RobotContainer {
 	public RobotContainer() {
 		// Configure the trigger bindings
 		configureBindings();
+
 		DriverStation.silenceJoystickConnectionWarning(true);
 		NamedCommands.registerCommand("test", Commands.print("I EXIST"));
+
+
+		boolean isCompetition = true;
+
+		// Build an auto chooser. This will use Commands.none() as the default option.
+		// As an example, this will only show autos that start with "comp" while at
+		// competition as defined by the programmer
+		autoChooser = AutoBuilder.buildAutoChooserWithOptionsModifier(
+				(stream) -> isCompetition
+						? stream.filter(auto -> auto.getName().startsWith("comp"))
+						: stream
+		);
+		autoChooser.addOption("2m", new PathPlannerAuto("2m"));
+		SmartDashboard.putData("Auto Chooser", autoChooser);
 	}
 
 	/**
@@ -164,7 +185,10 @@ public class RobotContainer {
 	 */
 	public Command getAutonomousCommand() {
 		// An example command will be run in autonomous
-		return drivebase.getAutonomousCommand("L4-1");
+//		return drivebase.getAutonomousCommand("L4-1");
+		//return drivebase.getAutonomousCommand("2m");
+		return autoChooser.getSelected();
+
 	}
 
 	public void setMotorBrake(boolean brake)
