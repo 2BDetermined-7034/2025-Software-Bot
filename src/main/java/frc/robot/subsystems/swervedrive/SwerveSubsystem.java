@@ -29,6 +29,7 @@ import edu.wpi.first.math.trajectory.Trajectory;
 import edu.wpi.first.math.util.Units;
 import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.Timer;
+import edu.wpi.first.wpilibj.smartdashboard.Field2d;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.Commands;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
@@ -164,7 +165,7 @@ public class SwerveSubsystem extends SubsystemBase {
 					// PPHolonomicController is the built in path following controller for holonomic drive trains
 					new PPHolonomicDriveController(
 							// Translation PID constants
-							new PIDConstants(4.0, 0.0, 0.2),
+							new PIDConstants(4.0, 0.0, 0.0),
 							// Rotation PID constants
 							new PIDConstants(4.0, 0.0, 0.0)
 					),
@@ -239,7 +240,7 @@ public class SwerveSubsystem extends SubsystemBase {
 	public Command driveToPose(Pose2d pose) {
 // Create the constraints to use while pathfinding
 		PathConstraints constraints = new PathConstraints(
-				/*swerveDrive.getMaximumChassisVelocity()*/ 1, 3.0,
+				swerveDrive.getMaximumChassisVelocity(), 2.5,
 				swerveDrive.getMaximumChassisAngularVelocity(), Units.degreesToRadians(720));
 
 // Since AutoBuilder is configured, we can use it to build pathfinding commands
@@ -663,5 +664,9 @@ public class SwerveSubsystem extends SubsystemBase {
 	 */
 	public SwerveDrive getSwerveDrive() {
 		return swerveDrive;
+	}
+
+	public Field2d getField() {
+		return swerveDrive.field;
 	}
 }
