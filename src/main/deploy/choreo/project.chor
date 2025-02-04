@@ -1,0 +1,78 @@
+{
+ "name":"project",
+ "version":1,
+ "type":"Swerve",
+ "variables":{
+  "expressions":{},
+  "poses":{}
+ },
+ "config":{
+  "frontLeft":{
+   "x":{
+    "exp":"29 cm",
+    "val":0.29
+   },
+   "y":{
+    "exp":"29 cm",
+    "val":0.29
+   }
+  },
+  "backLeft":{
+   "x":{
+    "exp":"-29 cm",
+    "val":-0.29
+   },
+   "y":{
+    "exp":"29 cm",
+    "val":0.29
+   }
+  },
+  "mass":{
+   "exp":"74.088 kg",
+   "val":74.088
+  },
+  "inertia":{
+   "exp":"6.883 kg m ^ 2",
+   "val":6.883
+  },
+  "gearing":{
+   "exp":"15.4",
+   "val":15.4
+  },
+  "radius":{
+   "exp":"0.048 m",
+   "val":0.048
+  },
+  "vmax":{
+   "exp":"5820 RPM",
+   "val":609.4689747964198
+  },
+  "tmax":{
+   "exp":"2.6 N * m",
+   "val":2.6
+  },
+  "cof":{
+   "exp":"1.2",
+   "val":1.2
+  },
+  "bumper":{
+   "front":{
+    "exp":"37 cm",
+    "val":0.37
+   },
+   "side":{
+    "exp":"37 cm",
+    "val":0.37
+   },
+   "back":{
+    "exp":"37 cm",
+    "val":0.37
+   }
+  },
+  "differentialTrackWidth":{
+   "exp":"22 in",
+   "val":0.5588
+  }
+ },
+ "generationFeatures":[]
+}

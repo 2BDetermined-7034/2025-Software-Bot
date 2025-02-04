@@ -37,9 +37,9 @@ public class RobotContainer {
 
 
 	// Replace with CommandPS4Controller or CommandJoystick if needed
-	final CommandPS5Controller driverController = new CommandPS5Controller(0);
+	final Controller driverController = new Controller(Controller.Type.LOGITECH, 0);
 	// The robot's subsystems and commands are defined here...
-	private final SwerveSubsystem       drivebase  = new SwerveSubsystem(new File(Filesystem.getDeployDirectory(),
+	private final SwerveSubsystem drivebase = new SwerveSubsystem(new File(Filesystem.getDeployDirectory(),
 			"swerve/Software-bot-swerve-config"));
 
 	Pose2d targetPose = drivebase.getPose();
@@ -107,7 +107,7 @@ public class RobotContainer {
 						? stream.filter(auto -> auto.getName().startsWith("comp"))
 						: stream
 		);
-		autoChooser.addOption("2m", new PathPlannerAuto("2m"));
+		autoChooser.addOption("Choreo Test", new PathPlannerAuto("Choreo Test"));
 		SmartDashboard.putData("Auto Chooser", autoChooser);
 	}
 
@@ -133,49 +133,49 @@ public class RobotContainer {
 			drivebase.setDefaultCommand(driveFieldOrientedAnglularVelocity);
 		}
 
-		if (Robot.isSimulation()) {
-			driverController.options().onTrue(Commands.runOnce(() -> drivebase.resetOdometry(new Pose2d(3, 3, new Rotation2d()))));
-			driverController.button(1).whileTrue(drivebase.sysIdDriveMotorCommand());
-		}
-		if (DriverStation.isTest()) {
-			drivebase.setDefaultCommand(driveFieldOrientedAnglularVelocity); // Overrides drive command above!
-
-			driverController.square().whileTrue(Commands.runOnce(drivebase::lock, drivebase).repeatedly());
-			driverController.triangle().whileTrue(drivebase.driveToDistanceCommand(1.0, 0.2));
-			driverController.options().onTrue((Commands.runOnce(drivebase::zeroGyro)));
-			driverController.create().whileTrue(drivebase.centerModulesCommand());
-			driverController.L1().onTrue(Commands.none());
-			driverController.R1().onTrue(Commands.none());
-		} else {
-			driverController.cross().onTrue((Commands.runOnce(drivebase::zeroGyro)));
-			driverController.square().onTrue(Commands.runOnce(drivebase::addFakeVisionReading));
-			driverController.circle().onTrue(new InstantCommand(() -> {
-				targetPose = drivebase.getPose();
-				double[] poseArray = {
-					targetPose.getX(),
-					targetPose.getY(),
-					targetPose.getRotation().getDegrees()
-				};
-				SmartDashboard.putNumberArray("Target Pose", poseArray);
-				SmartDashboard.putNumber("Target pose error", targetPose.getTranslation().getDistance(drivebase.getPose().getTranslation()));
-			}, drivebase));
-
-			driverController.triangle().whileTrue(
-				new DeferredCommand(
-					() -> new ParallelCommandGroup(
-						drivebase.driveToPose(targetPose),
-						Commands.run(() ->
-							SmartDashboard.putNumber("Target pose error", targetPose.getTranslation().getDistance(drivebase.getPose().getTranslation()))
-						)
-					), Set.of()
-				)
-			);
-
-			driverController.options().whileTrue(Commands.none());
-			driverController.create().whileTrue(Commands.none());
-			driverController.L1().whileTrue(Commands.runOnce(drivebase::lock, drivebase).repeatedly());
-			driverController.R1().onTrue(Commands.none());
-		}
+//		if (Robot.isSimulation()) {
+//			driverController.options().onTrue(Commands.runOnce(() -> drivebase.resetOdometry(new Pose2d(3, 3, new Rotation2d()))));
+//			driverController.button(1).whileTrue(drivebase.sysIdDriveMotorCommand());
+//		}
+//		if (DriverStation.isTest()) {
+//			drivebase.setDefaultCommand(driveFieldOrientedAnglularVelocity); // Overrides drive command above!
+//
+//			driverController.square().whileTrue(Commands.runOnce(drivebase::lock, drivebase).repeatedly());
+//			driverController.triangle().whileTrue(drivebase.driveToDistanceCommand(1.0, 0.2));
+//			driverController.options().onTrue((Commands.runOnce(drivebase::zeroGyro)));
+//			driverController.create().whileTrue(drivebase.centerModulesCommand());
+//			driverController.L1().onTrue(Commands.none());
+//			driverController.R1().onTrue(Commands.none());
+//		} else {
+//			driverController.cross().onTrue((Commands.runOnce(drivebase::zeroGyro)));
+//			driverController.square().onTrue(Commands.runOnce(drivebase::addFakeVisionReading));
+//			driverController.circle().onTrue(new InstantCommand(() -> {
+//				targetPose = drivebase.getPose();
+//				double[] poseArray = {
+//					targetPose.getX(),
+//					targetPose.getY(),
+//					targetPose.getRotation().getDegrees()
+//				};
+//				SmartDashboard.putNumberArray("Target Pose", poseArray);
+//				SmartDashboard.putNumber("Target pose error", targetPose.getTranslation().getDistance(drivebase.getPose().getTranslation()));
+//			}, drivebase));
+//
+//			driverController.triangle().whileTrue(
+//				new DeferredCommand(
+//					() -> new ParallelCommandGroup(
+//						drivebase.driveToPose(targetPose),
+//						Commands.run(() ->
+//							SmartDashboard.putNumber("Target pose error", targetPose.getTranslation().getDistance(drivebase.getPose().getTranslation()))
+//						)
+//					), Set.of()
+//				)
+//			);
+//
+//			driverController.options().whileTrue(Commands.none());
+//			driverController.create().whileTrue(Commands.none());
+//			driverController.L1().whileTrue(Commands.runOnce(drivebase::lock, drivebase).repeatedly());
+//			driverController.R1().onTrue(Commands.none());
+//		}
 	}
 
 	/**
