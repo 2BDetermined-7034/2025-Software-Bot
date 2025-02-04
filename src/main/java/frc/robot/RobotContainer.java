@@ -20,6 +20,7 @@ import edu.wpi.first.wpilibj2.command.button.CommandPS5Controller;
 import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
 import edu.wpi.first.wpilibj2.command.button.Trigger;
 import frc.robot.Constants.OperatorConstants;
+import frc.robot.subsystems.qrfc.Reef;
 import frc.robot.subsystems.swervedrive.SwerveSubsystem;
 import java.io.File;
 import java.util.List;
@@ -34,6 +35,7 @@ import swervelib.SwerveInputStream;
  */
 public class RobotContainer {
 	private final SendableChooser<Command> autoChooser;
+	private Reef reef = new Reef();
 
 
 	// Replace with CommandPS4Controller or CommandJoystick if needed

@@ -2,10 +2,15 @@ package frc.robot.subsystems.qrfc;
 
 import edu.wpi.first.math.geometry.Pose2d;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
+import edu.wpi.first.wpilibj2.command.SubsystemBase;
+import frc.robot.Robot;
 
+import java.io.Console;
 import java.util.Arrays;
 
-public class Reef {
+import org.opencv.objdetect.Board;
+
+public class Reef extends SubsystemBase {
 
     /*
     STEPS:
@@ -17,19 +22,21 @@ public class Reef {
      */
     //Each indice in m_reefStatus correlates to its sister pose in the pose array
     private final Pose2d[] reefPoses = new Pose2d[12];
+    // Reef tracking is up to you!
+    boolean[] m_reefStatus = new boolean[12];
 
     private boolean[] onboardReefStatus = new boolean[12];
 
     private int dodecagonLookat;
 
     public Reef () {
-
+        SmartDashboard.putBooleanArray("Reef", m_reefStatus);
     }
 
 
     private Pose2d getReefDestinationPose(int i){
         return reefPoses[i];
-    };
+    }
 
     /**
      * Compares local copy and new user input data (a similar boolean array of the same length)
@@ -62,9 +69,16 @@ public class Reef {
     /**
      * Called periodically in singleton instance
      */
-    public void process() {
-        int indice = findNewInputIndice(onboardReefStatus);
-        changeReefPosition(indice);
-        SmartDashboard.putBooleanArray("Reef", onboardReefStatus);
+    @Override
+    public void periodic() {
+        // int indice = findNewInputIndice(onboardReefStatus);
+        // changeReefPosition(indice);
+        // SmartDashboard.putBooleanArray("Reef", onboardReefStatus);
+        boolean[] newReefStatus = SmartDashboard.getBooleanArray("Reef", m_reefStatus);
+        if(newReefStatus == m_reefStatus){
+            System.out.println("im gonna crash out");
+        }else {
+            System.out.println("THey're diffrent!!!@!!!");
+        }
     }
 }
