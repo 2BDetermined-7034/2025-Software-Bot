@@ -12,6 +12,7 @@ import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.math.geometry.Translation2d;
 import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.Filesystem;
+import edu.wpi.first.wpilibj.PS5Controller;
 import edu.wpi.first.wpilibj.RobotBase;
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
@@ -25,6 +26,7 @@ import java.io.File;
 import java.util.List;
 import java.util.Set;
 
+import swervelib.SwerveDrive;
 import swervelib.SwerveInputStream;
 
 /**
@@ -37,7 +39,7 @@ public class RobotContainer {
 
 
 	// Replace with CommandPS4Controller or CommandJoystick if needed
-	final Controller driverController = new Controller(Controller.Type.LOGITECH, 0);
+	final CommandPS5Controller driverController = new CommandPS5Controller(0);
 	// The robot's subsystems and commands are defined here...
 	private final SwerveSubsystem drivebase = new SwerveSubsystem(new File(Filesystem.getDeployDirectory(),
 			"swerve/Software-bot-swerve-config"));
@@ -108,6 +110,11 @@ public class RobotContainer {
 						: stream
 		);
 		autoChooser.addOption("Choreo Test", new PathPlannerAuto("Choreo Test"));
+		autoChooser.addOption("Coral Station to Reef", new PathPlannerAuto("Coral Station to Reef"));
+		autoChooser.addOption("Reef to Coral Station", new PathPlannerAuto("Reef to Coral Station"));
+		autoChooser.addOption("smoother path", new PathPlannerAuto("smooth path"));
+		autoChooser.addOption("zesty auto", new PathPlannerAuto("zesty auto"));
+		autoChooser.addOption("china auto", new PathPlannerAuto("china auto"));
 		SmartDashboard.putData("Auto Chooser", autoChooser);
 	}
 
@@ -133,49 +140,54 @@ public class RobotContainer {
 			drivebase.setDefaultCommand(driveFieldOrientedAnglularVelocity);
 		}
 
-//		if (Robot.isSimulation()) {
-//			driverController.options().onTrue(Commands.runOnce(() -> drivebase.resetOdometry(new Pose2d(3, 3, new Rotation2d()))));
-//			driverController.button(1).whileTrue(drivebase.sysIdDriveMotorCommand());
-//		}
-//		if (DriverStation.isTest()) {
-//			drivebase.setDefaultCommand(driveFieldOrientedAnglularVelocity); // Overrides drive command above!
-//
-//			driverController.square().whileTrue(Commands.runOnce(drivebase::lock, drivebase).repeatedly());
-//			driverController.triangle().whileTrue(drivebase.driveToDistanceCommand(1.0, 0.2));
-//			driverController.options().onTrue((Commands.runOnce(drivebase::zeroGyro)));
-//			driverController.create().whileTrue(drivebase.centerModulesCommand());
-//			driverController.L1().onTrue(Commands.none());
-//			driverController.R1().onTrue(Commands.none());
-//		} else {
-//			driverController.cross().onTrue((Commands.runOnce(drivebase::zeroGyro)));
-//			driverController.square().onTrue(Commands.runOnce(drivebase::addFakeVisionReading));
-//			driverController.circle().onTrue(new InstantCommand(() -> {
-//				targetPose = drivebase.getPose();
-//				double[] poseArray = {
-//					targetPose.getX(),
-//					targetPose.getY(),
-//					targetPose.getRotation().getDegrees()
-//				};
-//				SmartDashboard.putNumberArray("Target Pose", poseArray);
-//				SmartDashboard.putNumber("Target pose error", targetPose.getTranslation().getDistance(drivebase.getPose().getTranslation()));
-//			}, drivebase));
-//
-//			driverController.triangle().whileTrue(
-//				new DeferredCommand(
-//					() -> new ParallelCommandGroup(
-//						drivebase.driveToPose(targetPose),
-//						Commands.run(() ->
-//							SmartDashboard.putNumber("Target pose error", targetPose.getTranslation().getDistance(drivebase.getPose().getTranslation()))
-//						)
-//					), Set.of()
-//				)
-//			);
-//
-//			driverController.options().whileTrue(Commands.none());
-//			driverController.create().whileTrue(Commands.none());
-//			driverController.L1().whileTrue(Commands.runOnce(drivebase::lock, drivebase).repeatedly());
-//			driverController.R1().onTrue(Commands.none());
-//		}
+
+
+		if (RobotBase.isSimulation()) {
+			driverController.options().onTrue(Commands.runOnce(() -> drivebase.resetOdometry(new Pose2d(3, 3, new Rotation2d()))));
+			driverController.button(1).whileTrue(drivebase.sysIdDriveMotorCommand());
+		}
+		if (DriverStation.isTest()) {
+			drivebase.setDefaultCommand(driveFieldOrientedAnglularVelocity); // Overrides drive command above!
+
+			driverController.square().whileTrue(Commands.runOnce(drivebase::lock, drivebase).repeatedly());
+			driverController.triangle().whileTrue(drivebase.driveToDistanceCommand(1.0, 0.2));
+			driverController.options().onTrue((Commands.runOnce(drivebase::zeroGyro)));
+			driverController.create().whileTrue(drivebase.centerModulesCommand());
+			driverController.L1().onTrue(Commands.none());
+			driverController.R1().onTrue(Commands.none());
+		} else {
+			driverController.cross().onTrue((Commands.runOnce(drivebase::zeroGyro)));
+			driverController.square().onTrue(Commands.runOnce(drivebase::addFakeVisionReading));
+			driverController.circle().onTrue(new InstantCommand(() -> {
+				targetPose = drivebase.getPose();
+				double[] poseArray = {
+					targetPose.getX(),
+					targetPose.getY(),
+					targetPose.getRotation().getDegrees()
+				};
+				SmartDashboard.putNumberArray("Target Pose", poseArray);
+				SmartDashboard.putNumber("Target pose error", targetPose.getTranslation().getDistance(drivebase.getPose().getTranslation()));
+			}, drivebase));
+
+			driverController.triangle().whileTrue(
+				new DeferredCommand(
+					() -> new ParallelCommandGroup(
+						drivebase.driveToPose(targetPose),
+						Commands.run(() ->
+							SmartDashboard.putNumber("Target pose error", targetPose.getTranslation().getDistance(drivebase.getPose().getTranslation()))
+						)
+					), Set.of()
+				)
+			);
+
+			driverController.options().whileTrue(Commands.none());
+			driverController.create().whileTrue(Commands.none());
+			driverController.L1().whileTrue(Commands.runOnce(drivebase::lock, drivebase).repeatedly());
+			driverController.R1().onTrue(Commands.none());
+			driverController.cross().onTrue(new InstantCommand(() -> drivebase.zeroGyro()));
+		}
+
+
 	}
 
 	/**

@@ -57,7 +57,7 @@ public class Vision {
 	enum Cameras {
 		FRONT_CAM("front",
 				new Transform3d(
-						new Translation3d(0.39, 0, 0.135),
+						new Translation3d(0.39, 0, 0.16),
 						new Rotation3d(0, Math.toRadians(-70), 0)),
 				PhotonPoseEstimator.PoseStrategy.MULTI_TAG_PNP_ON_COPROCESSOR,
 				VecBuilder.fill(2.0, 2.0, 0.5),
