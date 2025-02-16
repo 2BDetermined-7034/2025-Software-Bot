@@ -7,7 +7,31 @@
         {
           "type": "path",
           "data": {
-            "pathName": "zestier path start"
+            "pathName": "zestier path 0"
+          }
+        },
+        {
+          "type": "wait",
+          "data": {
+            "waitTime": 1.0
+          }
+        },
+        {
+          "type": "path",
+          "data": {
+            "pathName": "zestier path 1"
+          }
+        },
+        {
+          "type": "wait",
+          "data": {
+            "waitTime": 1.0
+          }
+        },
+        {
+          "type": "path",
+          "data": {
+            "pathName": "zestier path 2"
           }
         }
       ]
