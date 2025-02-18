@@ -99,7 +99,7 @@ public class RobotContainer {
 		NamedCommands.registerCommand("test", Commands.print("I EXIST"));
 
 
-		boolean isCompetition = true;
+		boolean isCompetition = false;
 
 		// Build an auto chooser. This will use Commands.none() as the default option.
 		// As an example, this will only show autos that start with "comp" while at
@@ -109,12 +109,7 @@ public class RobotContainer {
 						? stream.filter(auto -> auto.getName().startsWith("comp"))
 						: stream
 		);
-		autoChooser.addOption("Choreo Test", new PathPlannerAuto("Choreo Test"));
-		autoChooser.addOption("Coral Station to Reef", new PathPlannerAuto("Coral Station to Reef"));
-		autoChooser.addOption("Reef to Coral Station", new PathPlannerAuto("Reef to Coral Station"));
-		autoChooser.addOption("smoother path", new PathPlannerAuto("smooth path"));
-		autoChooser.addOption("zesty auto", new PathPlannerAuto("zesty auto"));
-		autoChooser.addOption("china auto", new PathPlannerAuto("china auto"));
+
 		SmartDashboard.putData("Auto Chooser", autoChooser);
 	}
 
