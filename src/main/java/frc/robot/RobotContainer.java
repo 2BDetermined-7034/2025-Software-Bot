@@ -131,7 +131,7 @@ public class RobotContainer {
 		Command driveSetpointGenKeyboard                   = drivebase.driveWithSetpointGeneratorFieldRelative(driveDirectAngleKeyboard);
 
 		if (RobotBase.isSimulation()) {
-			drivebase.setDefaultCommand(driveFieldOrientedDirectAngleKeyboard);
+			drivebase.setDefaultCommand(driveFieldOrientedAnglularVelocity);
 		} else {
 			drivebase.setDefaultCommand(driveFieldOrientedAnglularVelocity);
 		}
@@ -180,7 +180,7 @@ public class RobotContainer {
 			driverController.L1().whileTrue(Commands.runOnce(drivebase::lock, drivebase).repeatedly());
 			driverController.R1().onTrue(Commands.none());
 			driverController.cross().onTrue(new InstantCommand(() -> drivebase.zeroGyro()));
-			driverController.square().whileTrue(Commands.defer(() -> OTFPathFinding.goToNearestReef(drivebase, true), Set.of()));
+			driverController.square().whileTrue(Commands.defer(() -> OTFPathFinding.goToNearestReef(drivebase), Set.of()));
 		}
 
 
