@@ -21,6 +21,7 @@ import edu.wpi.first.wpilibj2.command.button.CommandPS5Controller;
 import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
 import edu.wpi.first.wpilibj2.command.button.Trigger;
 import frc.robot.Constants.OperatorConstants;
+import frc.robot.commands.swervedrive.auto.OTFPathFinding;
 import frc.robot.subsystems.swervedrive.SwerveSubsystem;
 import java.io.File;
 import java.util.List;
@@ -152,7 +153,6 @@ public class RobotContainer {
 			driverController.R1().onTrue(Commands.none());
 		} else {
 			driverController.cross().onTrue((Commands.runOnce(drivebase::zeroGyro)));
-			driverController.square().onTrue(Commands.runOnce(drivebase::addFakeVisionReading));
 			driverController.circle().onTrue(new InstantCommand(() -> {
 				targetPose = drivebase.getPose();
 				double[] poseArray = {
@@ -180,6 +180,7 @@ public class RobotContainer {
 			driverController.L1().whileTrue(Commands.runOnce(drivebase::lock, drivebase).repeatedly());
 			driverController.R1().onTrue(Commands.none());
 			driverController.cross().onTrue(new InstantCommand(() -> drivebase.zeroGyro()));
+			driverController.square().whileTrue(Commands.defer(() -> OTFPathFinding.goToNearestReef(drivebase, true), Set.of()));
 		}
 
 
