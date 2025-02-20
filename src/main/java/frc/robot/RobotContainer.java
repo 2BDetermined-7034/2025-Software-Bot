@@ -6,13 +6,10 @@ package frc.robot;
 
 import com.pathplanner.lib.auto.AutoBuilder;
 import com.pathplanner.lib.auto.NamedCommands;
-import com.pathplanner.lib.commands.PathPlannerAuto;
 import edu.wpi.first.math.geometry.Pose2d;
 import edu.wpi.first.math.geometry.Rotation2d;
-import edu.wpi.first.math.geometry.Translation2d;
 import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.Filesystem;
-import edu.wpi.first.wpilibj.PS5Controller;
 import edu.wpi.first.wpilibj.RobotBase;
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
@@ -24,10 +21,8 @@ import frc.robot.Constants.OperatorConstants;
 import frc.robot.commands.swervedrive.auto.OTFPathFinding;
 import frc.robot.subsystems.swervedrive.SwerveSubsystem;
 import java.io.File;
-import java.util.List;
 import java.util.Set;
 
-import swervelib.SwerveDrive;
 import swervelib.SwerveInputStream;
 
 /**
@@ -131,7 +126,7 @@ public class RobotContainer {
 		Command driveSetpointGenKeyboard                   = drivebase.driveWithSetpointGeneratorFieldRelative(driveDirectAngleKeyboard);
 
 		if (RobotBase.isSimulation()) {
-			drivebase.setDefaultCommand(driveFieldOrientedAnglularVelocity);
+			drivebase.setDefaultCommand(driveFieldOrientedAnglularVelocityKeyboard);
 		} else {
 			drivebase.setDefaultCommand(driveFieldOrientedAnglularVelocity);
 		}
@@ -180,7 +175,7 @@ public class RobotContainer {
 			driverController.L1().whileTrue(Commands.runOnce(drivebase::lock, drivebase).repeatedly());
 			driverController.R1().onTrue(Commands.none());
 			driverController.cross().onTrue(new InstantCommand(() -> drivebase.zeroGyro()));
-			driverController.square().whileTrue(Commands.defer(() -> OTFPathFinding.goToNearestReef(drivebase), Set.of()));
+			driverController.square().whileTrue(OTFPathFinding.goToNearestReef(drivebase));
 		}
 
 

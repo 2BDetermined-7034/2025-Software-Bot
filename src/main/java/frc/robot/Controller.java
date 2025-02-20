@@ -2,19 +2,14 @@ package frc.robot;
 
 import edu.wpi.first.wpilibj.GenericHID;
 
-import javax.naming.ldap.Control;
-
 public class Controller extends GenericHID {
 	enum Type {
 		PS5,
 		LOGITECH
 	}
 
-	private final Type type;
-
 	public Controller(Type type, int port) {
 		super(port);
-		this.type = type;
 	}
 
 	public double getLeftX() {
