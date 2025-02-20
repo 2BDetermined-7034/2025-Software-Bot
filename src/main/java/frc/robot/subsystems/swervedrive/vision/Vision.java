@@ -21,7 +21,7 @@ import java.util.Optional;
 
 public class Vision {
 
-	private static final AprilTagFieldLayout k2025Reefscape = AprilTagFieldLayout.loadField(AprilTagFields.k2025Reefscape);
+	private static final AprilTagFieldLayout apriltagFieldLayout = AprilTagFieldLayout.loadField(AprilTagFields.k2025ReefscapeAndyMark);
 
 	/**
 	 * Construct a vision singleton
@@ -57,7 +57,7 @@ public class Vision {
 	enum Cameras {
 		FRONT_CAM("front",
 				new Transform3d(
-						new Translation3d(0.39, 0, 0.135),
+						new Translation3d(0.39, 0, 0.16),
 						new Rotation3d(0, Math.toRadians(-70), 0)),
 				PhotonPoseEstimator.PoseStrategy.MULTI_TAG_PNP_ON_COPROCESSOR,
 				VecBuilder.fill(2.0, 2.0, 0.5),
@@ -95,7 +95,7 @@ public class Vision {
 			this.robotToCam = robotToCam;
 			this.singleTagStdDevs = singleTagStdDevs;
 			this.multiTagStdDevs = multiTagStdDevs;
-			this.poseEstimator = new PhotonPoseEstimator(k2025Reefscape, poseStrategy, robotToCam);
+			this.poseEstimator = new PhotonPoseEstimator(apriltagFieldLayout, poseStrategy, robotToCam);
 			this.curStdDevs = singleTagStdDevs;
 		}
 

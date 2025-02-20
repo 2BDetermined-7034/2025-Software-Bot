@@ -50,6 +50,9 @@
         "header": {
           "open": true
         }
+      },
+      "window": {
+        "visible": false
       }
     }
   },
@@ -60,6 +63,8 @@
       "/LiveWindow/Ungrouped/PIDController[1]": "PIDController",
       "/LiveWindow/Ungrouped/Pigeon 2 [13]": "Gyro",
       "/LiveWindow/Ungrouped/Scheduler": "Scheduler",
+      "/SmartDashboard/Alerts": "Alerts",
+      "/SmartDashboard/Auto Chooser": "String Chooser",
       "/SmartDashboard/Encoders": "Alerts",
       "/SmartDashboard/Field": "Field2d",
       "/SmartDashboard/IMU": "Alerts",
@@ -74,11 +79,6 @@
       "/SmartDashboard/navX-Sensor[4]": "Gyro"
     },
     "windows": {
-      "/FMSInfo": {
-        "window": {
-          "visible": true
-        }
-      },
       "/SmartDashboard/Field": {
         "OdometryPose": {
           "arrowColor": [
@@ -134,6 +134,12 @@
     }
   },
   "NetworkTables Info": {
+    "Connections": {
+      "open": true
+    },
     "visible": true
+  },
+  "NetworkTables View": {
+    "visible": false
   }
 }

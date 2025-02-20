@@ -6,10 +6,8 @@ package frc.robot;
 
 import com.pathplanner.lib.auto.AutoBuilder;
 import com.pathplanner.lib.auto.NamedCommands;
-import com.pathplanner.lib.commands.PathPlannerAuto;
 import edu.wpi.first.math.geometry.Pose2d;
 import edu.wpi.first.math.geometry.Rotation2d;
-import edu.wpi.first.math.geometry.Translation2d;
 import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.Filesystem;
 import edu.wpi.first.wpilibj.RobotBase;
@@ -20,9 +18,9 @@ import edu.wpi.first.wpilibj2.command.button.CommandPS5Controller;
 import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
 import edu.wpi.first.wpilibj2.command.button.Trigger;
 import frc.robot.Constants.OperatorConstants;
+import frc.robot.commands.swervedrive.auto.OTFPathFinding;
 import frc.robot.subsystems.swervedrive.SwerveSubsystem;
 import java.io.File;
-import java.util.List;
 import java.util.Set;
 
 import swervelib.SwerveInputStream;
@@ -39,7 +37,7 @@ public class RobotContainer {
 	// Replace with CommandPS4Controller or CommandJoystick if needed
 	final CommandPS5Controller driverController = new CommandPS5Controller(0);
 	// The robot's subsystems and commands are defined here...
-	private final SwerveSubsystem       drivebase  = new SwerveSubsystem(new File(Filesystem.getDeployDirectory(),
+	private final SwerveSubsystem drivebase = new SwerveSubsystem(new File(Filesystem.getDeployDirectory(),
 			"swerve/Software-bot-swerve-config"));
 
 	Pose2d targetPose = drivebase.getPose();
@@ -97,7 +95,7 @@ public class RobotContainer {
 		NamedCommands.registerCommand("test", Commands.print("I EXIST"));
 
 
-		boolean isCompetition = true;
+		boolean isCompetition = false;
 
 		// Build an auto chooser. This will use Commands.none() as the default option.
 		// As an example, this will only show autos that start with "comp" while at
@@ -107,7 +105,7 @@ public class RobotContainer {
 						? stream.filter(auto -> auto.getName().startsWith("comp"))
 						: stream
 		);
-		autoChooser.addOption("2m", new PathPlannerAuto("2m"));
+
 		SmartDashboard.putData("Auto Chooser", autoChooser);
 	}
 
@@ -128,12 +126,14 @@ public class RobotContainer {
 		Command driveSetpointGenKeyboard                   = drivebase.driveWithSetpointGeneratorFieldRelative(driveDirectAngleKeyboard);
 
 		if (RobotBase.isSimulation()) {
-			drivebase.setDefaultCommand(driveFieldOrientedDirectAngleKeyboard);
+			drivebase.setDefaultCommand(driveFieldOrientedAnglularVelocityKeyboard);
 		} else {
 			drivebase.setDefaultCommand(driveFieldOrientedAnglularVelocity);
 		}
 
-		if (Robot.isSimulation()) {
+
+
+		if (RobotBase.isSimulation()) {
 			driverController.options().onTrue(Commands.runOnce(() -> drivebase.resetOdometry(new Pose2d(3, 3, new Rotation2d()))));
 			driverController.button(1).whileTrue(drivebase.sysIdDriveMotorCommand());
 		}
@@ -148,7 +148,6 @@ public class RobotContainer {
 			driverController.R1().onTrue(Commands.none());
 		} else {
 			driverController.cross().onTrue((Commands.runOnce(drivebase::zeroGyro)));
-			driverController.square().onTrue(Commands.runOnce(drivebase::addFakeVisionReading));
 			driverController.circle().onTrue(new InstantCommand(() -> {
 				targetPose = drivebase.getPose();
 				double[] poseArray = {
@@ -175,7 +174,11 @@ public class RobotContainer {
 			driverController.create().whileTrue(Commands.none());
 			driverController.L1().whileTrue(Commands.runOnce(drivebase::lock, drivebase).repeatedly());
 			driverController.R1().onTrue(Commands.none());
+			driverController.cross().onTrue(new InstantCommand(() -> drivebase.zeroGyro()));
+			driverController.square().whileTrue(OTFPathFinding.goToNearestReef(drivebase));
 		}
+
+
 	}
 
 	/**
