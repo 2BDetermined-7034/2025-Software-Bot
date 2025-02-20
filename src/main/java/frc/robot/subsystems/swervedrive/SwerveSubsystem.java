@@ -5,6 +5,7 @@
 package frc.robot.subsystems.swervedrive;
 
 import static edu.wpi.first.units.Units.Meter;
+import static edu.wpi.first.units.Units.MetersPerSecond;
 
 import com.pathplanner.lib.auto.AutoBuilder;
 import com.pathplanner.lib.commands.PathPlannerAuto;
@@ -165,7 +166,7 @@ public class SwerveSubsystem extends SubsystemBase {
 					// PPHolonomicController is the built in path following controller for holonomic drive trains
 					new PPHolonomicDriveController(
 							// Translation PID constants
-							new PIDConstants(4.0, 0.0, 0.0),
+							new PIDConstants(5.0, 0.0, 0.0),
 							// Rotation PID constants
 							new PIDConstants(4.0, 0.0, 0.0)
 					),
@@ -241,13 +242,13 @@ public class SwerveSubsystem extends SubsystemBase {
 // Create the constraints to use while pathfinding
 		PathConstraints constraints = new PathConstraints(
 				swerveDrive.getMaximumChassisVelocity(), 2.5,
-				swerveDrive.getMaximumChassisAngularVelocity(), Units.degreesToRadians(720));
+				swerveDrive.getMaximumChassisAngularVelocity(), Units.degreesToRadians(540));
 
 // Since AutoBuilder is configured, we can use it to build pathfinding commands
 		return AutoBuilder.pathfindToPose(
 				pose,
 				constraints,
-				edu.wpi.first.units.Units.MetersPerSecond.of(0.0) // Goal end velocity in meters/sec
+				MetersPerSecond.of(0.0) // Goal end velocity in meters/sec
 		);
 	}
 

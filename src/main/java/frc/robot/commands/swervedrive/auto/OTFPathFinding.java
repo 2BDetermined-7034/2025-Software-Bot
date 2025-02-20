@@ -79,16 +79,16 @@ public class OTFPathFinding {
     public static Command goToNearestReef(SwerveSubsystem drivebase) {
         return new DeferredCommand(
                 () -> goToNearestReefUndefferred(drivebase),
-                Set.of(drivebase)
+                Set.of()
         );
     }
 
-    private static Command goToNearestReefUndefferred(SwerveSubsystem drivebase) {
+    public static Command goToNearestReefUndefferred(SwerveSubsystem drivebase) {
         boolean isBlue = DriverStation.getAlliance().get().equals(Alliance.Blue);
 
         Translation2d reef = isBlue ? blueReef : redReef;
 
-        Distance distFromReef = Meters.of(2);
+        Distance distFromReef = Meters.of(1.5);
         Distance distTangent = Inches.of(7);
 
         Angle angleToReef = Rotations.of(drivebase.getPose().getTranslation().minus(reef).getAngle().getRotations());

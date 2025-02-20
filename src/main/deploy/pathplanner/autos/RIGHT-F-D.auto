@@ -1,0 +1,31 @@
+{
+  "version": "2025.0",
+  "command": {
+    "type": "sequential",
+    "data": {
+      "commands": [
+        {
+          "type": "path",
+          "data": {
+            "pathName": "RIGHT-F"
+          }
+        },
+        {
+          "type": "path",
+          "data": {
+            "pathName": "F-RC"
+          }
+        },
+        {
+          "type": "path",
+          "data": {
+            "pathName": "RC-D"
+          }
+        }
+      ]
+    }
+  },
+  "resetOdom": true,
+  "folder": null,
+  "choreoAuto": true
+}
