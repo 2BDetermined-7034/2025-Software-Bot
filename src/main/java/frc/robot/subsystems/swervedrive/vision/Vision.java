@@ -61,7 +61,7 @@ public class Vision {
 						new Rotation3d(0, Math.toRadians(-70), 0)),
 				PhotonPoseEstimator.PoseStrategy.MULTI_TAG_PNP_ON_COPROCESSOR,
 				VecBuilder.fill(2.0, 2.0, 0.5),
-				VecBuilder.fill(1.0, 1.0, 0.5));
+				VecBuilder.fill(1.5, 1.5, 0.5));
 //		BACK_CAM("back",
 //				new Transform3d(
 //						new Translation3d(-0.39, 0.0, 0.23),
